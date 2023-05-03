@@ -24,7 +24,15 @@ class FormatAndPostMessage(Resource):
         
     def get(self):
 
-        return 200
+        try:
+            message = request.get_json()
+            data = parseData(message)
+            postToInfluxDB(data)
+            return 200
+        
+        except Exception as e:
+            print(e)
+            return 400
         
 
 api.add_resource(FormatAndPostMessage, '/')
