@@ -22,6 +22,10 @@ class FormatAndPostMessage(Resource):
             print(e)
             return 400
         
+    def get(self):
+
+        return 200
+        
 
 api.add_resource(FormatAndPostMessage, '/')
 
