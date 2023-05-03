@@ -1,7 +1,7 @@
 from datetime import datetime
 from influxdb_client import Point
 from influxdb_client.client.write_api import ASYNCHRONOUS, SYNCHRONOUS
-from dotenv import dotenv_values
+import os
 from influxdb_client import InfluxDBClient
 
 
@@ -17,13 +17,14 @@ def parseData(data):
 
 
 def postToInfluxDB(data):
-    config = dotenv_values(".env")
-    client = InfluxDBClient(url=config["URL"],
-                            token=config["INFLUXDB_TOKEN"],
-                            org=config["ORG"])
-    
-    print(config["BUCKET"])
-    
+    url = os.getenv("URL")
+    token = os.getenv("INFLUXDB_TOKEN")
+    org = os.getenv("ORG")
+    bucket = os.getenv("BUCKET")
+    client = InfluxDBClient(url=url,
+                            token=token,
+                            org=org)
+        
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     p = Point("SensorData").tag("Prototype", 1) \
@@ -42,9 +43,7 @@ def postToInfluxDB(data):
         .field("rotation_z", float(data["rotation_z"])) \
         .time(datetime.now())
     
-    write_api.write(bucket=config["BUCKET"], org=config["ORG"], record=p)
-
-    print("Wrote data to InfluxDB")
+    write_api.write(bucket=bucket, org=org, record=p)
 
     #write_api.__del__()
     #client.__del__()

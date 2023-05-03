@@ -18,7 +18,8 @@ class FormatAndPostMessage(Resource):
             postToInfluxDB(data)
             return 200
         
-        except:
+        except Exception as e:
+            print(e)
             return 400
         
 
