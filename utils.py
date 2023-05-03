@@ -27,21 +27,34 @@ def postToInfluxDB(data):
         
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
-    p = Point("SensorData").tag("Prototype", 1) \
-        .field("lat", float(data['lat'])) \
-        .field("long", float(data["long"])) \
-        .field("speed", float(data["speed"])) \
-        .field("heading", float(data["heading"])) \
-        .field("altitude", float(data["altitude"])) \
-        .field("temperature", float(data["temperature"])) \
-        .field("battery", float(data["battery"])) \
-        .field("acceleration_x", float(data["acceleration_x"])) \
-        .field("acceleration_y", float(data["acceleration_y"])) \
-        .field("acceleration_z", float(data["acceleration_z"])) \
-        .field("rotation_x", float(data["rotation_x"])) \
-        .field("rotation_y", float(data["rotation_y"])) \
-        .field("rotation_z", float(data["rotation_z"])) \
-        .time(datetime.now())
+    try:
+        p = Point("SensorData").tag("Prototype", 1) \
+            .field("lat", float(data['lat'])) \
+            .field("long", float(data["long"])) \
+            .field("speed", float(data["speed"])) \
+            .field("heading", float(data["heading"])) \
+            .field("altitude", float(data["altitude"])) \
+            .field("temperature", float(data["temperature"])) \
+            .field("battery", float(data["battery"])) \
+            .field("acceleration_x", float(data["acceleration_x"])) \
+            .field("acceleration_y", float(data["acceleration_y"])) \
+            .field("acceleration_z", float(data["acceleration_z"])) \
+            .field("rotation_x", float(data["rotation_x"])) \
+            .field("rotation_y", float(data["rotation_y"])) \
+            .field("rotation_z", float(data["rotation_z"])) \
+            .time(datetime.now())
+        
+    except:
+        p = Point("SensorData").tag("Prototype", 1) \
+            .field("lat", float(data['lat'])) \
+            .field("long", float(data["long"])) \
+            .field("speed", float(data["speed"])) \
+            .field("heading", float(data["heading"])) \
+            .field("altitude", float(data["altitude"])) \
+            .field("temperature", float(data["temperature"])) \
+            .field("battery", float(data["battery"])) \
+            .time(datetime.now())
+
     
     write_api.write(bucket=bucket, org=org, record=p)
 
