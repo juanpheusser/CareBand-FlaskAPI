@@ -25,7 +25,6 @@ class FormatAndPostMessage(Resource):
     def get(self):
 
         try:
-            return 200
             message = request.get_json()
             data = parseData(message)
             postToInfluxDB(data)
